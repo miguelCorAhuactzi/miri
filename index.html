@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para ti ❤️</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: radial-gradient(circle at center, #00132a, #000000 70%);
+        overflow: hidden;
+        font-family: 'Arial', sans-serif;
+        color: white;
+    }
+
+    /* Fondo de estrellas animadas */
+    #stars, #stars2, #stars3 {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    #stars {
+        background: url('https://i.imgur.com/8pUjzZB.png') repeat;
+        animation: animStars 50s linear infinite;
+    }
+    #stars2 {
+        background: url('https://i.imgur.com/8pUjzZB.png') repeat;
+        animation: animStars 100s linear infinite;
+        opacity: 0.6;
+    }
+    #stars3 {
+        background: url('https://i.imgur.com/8pUjzZB.png') repeat;
+        animation: animStars 150s linear infinite;
+        opacity: 0.3;
+    }
+
+    @keyframes animStars {
+        from { background-position: 0 0; }
+        to { background-position: -2000px 2000px; }
+    }
+
+    /* Contenedor playlist */
+    .audio-box {
+        width: 85%;
+        max-width: 400px;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 15px;
+        border-radius: 25px;
+        backdrop-filter: blur(8px);
+        margin: 20px auto;
+        text-align: center;
+        box-shadow: 0 0 10px #ff4f8a;
+        position: relative;
+        z-index: 3;
+    }
+
+    audio { width: 100%; }
+
+    .btn {
+        padding: 8px 15px;
+        border-radius: 15px;
+        border: none;
+        background: #ff4f8a;
+        color: white;
+        cursor: pointer;
+        margin: 5px;
+        font-weight: bold;
+    }
+
+    /* Corazón centrado */
+    .heart {
+        width: 200px;
+        position: absolute;
+        top: 52%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: lateo 1.4s infinite ease-in-out;
+        filter: drop-shadow(0 0 20px red);
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    @keyframes lateo {
+        0% { transform: translate(-50%, -50%) scale(1); }
+        50% { transform: translate(-50%, -50%) scale(1.12); }
+        100% { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    /* Mensajes y fotos flotando */
+    .burbuja {
+        position: absolute;
+        padding: 10px 20px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.18);
+        backdrop-filter: blur(6px);
+        box-shadow: 0 0 10px #ff7eca;
+        animation: flotar 7s linear forwards;
+        color: white;
+        z-index: 3;
+        max-width: 180px;
+        text-align: center;
+    }
+
+    .foto {
+        width: 120px;
+        height: 120px;
+        border-radius: 20px;
+        object-fit: cover;
+        box-shadow: 0 0 10px #ff7eca;
+    }
+
+    @keyframes flotar {
+        0% { opacity: 0; transform: translateY(0) scale(0.6); }
+        10% { opacity: 1; }
+        100% { opacity: 0; transform: translateY(-250px) scale(1.05); }
+    }
+</style>
+</head>
+<body>
+
+<!-- Estrellas -->
+<div id="stars"></div>
+<div id="stars2"></div>
+<div id="stars3"></div>
+
+<!-- Playlist -->
+<div class="audio-box">
+    <strong>Te dedico estas canciones ❤️</strong><br><br>
+    <audio id="player" controls></audio><br>
+    <button class="btn" onclick="prevSong()">⏮️</button>
+    <button class="btn" onclick="nextSong()">⏭️</button>
+    <p id="songName"></p>
+</div>
+
+<!-- Corazón -->
+<img src="corazon.png" class="heart">
+
+<script>
+/* Lista de canciones */
+const playlist = [
+    { name: "desde que llegaste.mp3", title: "Desde que llegaste" },
+    { name: "Lord Huron - The Night We Met (Music Video)(MP3_160K) (1).mp3", title: "The Night We Met" },
+    { name: "Sin Bandera - Y llegaste tú (Letra)(MP3_160K).mp3", title: "Y Llegaste Tú" }
+];
+
+
+let current = 0;
+const player = document.getElementById("player");
+const songName = document.getElementById("songName");
+
+function loadSong(i) {
+    player.src = playlist[i].name;
+    songName.innerText = playlist[i].title;
+    player.play();
+}
+
+function nextSong() {
+    current = (current + 1) % playlist.length;
+    loadSong(current);
+}
+
+function prevSong() {
+    current = (current - 1 + playlist.length) % playlist.length;
+    loadSong(current);
+}
+
+loadSong(0);
+
+/* Mensajes */
+const mensajes = [
+    "Pensaba que sabía lo que quería, pero llegaste tú y redefiniste mi mundo... y apenas nos estamos besando. 😉",
+    "Te adoro, y es un sentimiento tan nuevo y fuerte que me emociona. Me encanta descubrir esto contigo.",
+    "No puedo dejar de sonreír al recordar nuestro primer beso.",
+    "Gracias por estar en mi vida",
+    "Desde ese beso, siento que camino dos centímetros sobre el suelo. Eres mi gravedad... y mi vuelo.",
+    "Me encanta cómo me ves.",
+    "Me haces sentir como si todo fuese posible."
+];
+
+/* Fotos */
+const fotos = [
+    "foto1.jpg",
+    "foto2.jpg",
+    "foto3.jpg"
+];
+
+/* Burbujas */
+function crearBurbuja() {
+    const burbuja = document.createElement("div");
+    burbuja.className = "burbuja";
+
+    const x = Math.random() * window.innerWidth;
+    const y = window.innerHeight - 120;
+
+    burbuja.style.left = x + "px";
+    burbuja.style.top = y + "px";
+
+    if (Math.random() < 0.5) {
+        burbuja.innerText = mensajes[Math.floor(Math.random() * mensajes.length)];
+    } else {
+        const img = document.createElement("img");
+        img.src = fotos[Math.floor(Math.random() * fotos.length)];
+        img.className = "foto";
+        burbuja.appendChild(img);
+    }
+
+    document.body.appendChild(burbuja);
+    setTimeout(() => burbuja.remove(), 7000);
+}
+
+setInterval(crearBurbuja, 1900);
+</script>
+
+</body>
+</html>
